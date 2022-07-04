@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wJq-Ph-qaJ">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TrafficLight" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Hod-LS-TMv">
+                                <rect key="frame" x="142.5" y="321" width="129" height="254"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="254" id="ebY-gX-bcn"/>
+                                    <constraint firstAttribute="width" constant="129" id="vJD-Tc-eit"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1w-Xe-jva">
+                                <rect key="frame" x="110.5" y="583" width="193" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="N2h-sy-wtI"/>
+                                    <constraint firstAttribute="width" constant="193" id="NCQ-34-7z4"/>
+                                </constraints>
+                                <state key="normal" title="Start/Restart Traffic Lights"/>
+                                <connections>
+                                    <action selector="startPressedOn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eJs-rV-r50"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Hod-LS-TMv" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="0yD-b9-eyT"/>
+                            <constraint firstItem="Hod-LS-TMv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Nsd-yW-TTa"/>
+                            <constraint firstItem="d1w-Xe-jva" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="lLC-aB-xcF"/>
+                            <constraint firstItem="d1w-Xe-jva" firstAttribute="top" secondItem="Hod-LS-TMv" secondAttribute="bottom" constant="8" id="zZs-hC-KTa"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Vz1-YA-rtY">
+                        <barButtonItem key="rightBarButtonItem" title="History" id="K30-me-LlQ">
+                            <connections>
+                                <segue destination="DY8-pU-oHT" kind="show" id="sFg-PL-4AX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="trafficLightImage" destination="Hod-LS-TMv" id="UFC-fX-weD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-73.913043478260875" y="92.410714285714278"/>
+        </scene>
+        <!--Traffic Light Table View Controller-->
+        <scene sceneID="ZiC-jZ-WlN">
+            <objects>
+                <tableViewController id="DY8-pU-oHT" customClass="TrafficLightTableViewController" customModule="TrafficLight" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="b6m-es-eAb">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="NVu-wn-j95" detailTextLabel="f1T-C8-oW7" style="IBUITableViewCellStyleSubtitle" id="Eia-R8-8V6">
+                                <rect key="frame" x="0.0" y="28" width="414" height="55.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Eia-R8-8V6" id="CYB-S4-3yK">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="55.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NVu-wn-j95">
+                                            <rect key="frame" x="20" y="10" width="33" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="f1T-C8-oW7">
+                                            <rect key="frame" x="20" y="31.5" width="33" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="DY8-pU-oHT" id="H7T-bI-YAB"/>
+                            <outlet property="delegate" destination="DY8-pU-oHT" id="2hV-Gu-Mg0"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="7d5-A3-g7a">
+                        <barButtonItem key="rightBarButtonItem" title="Delete All" id="vFc-TN-ELe">
+                            <connections>
+                                <action selector="deleteAllButton:" destination="DY8-pU-oHT" id="gDU-aL-rM5"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1W9-Lh-kfc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="798" y="89"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0GS-zy-Gi9">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="wJq-Ph-qaJ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="U1D-Yc-xWZ">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Dkx-8G-b6R"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="56p-Jh-ERv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-984.05797101449286" y="92.410714285714278"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
