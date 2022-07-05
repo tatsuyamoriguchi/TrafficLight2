@@ -61,7 +61,6 @@ class ViewController: UIViewController {
     
     
     
-    
     func trafficLights() {
         let opeGreen = BlockOperation {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
@@ -91,10 +90,9 @@ class ViewController: UIViewController {
         queue.addOperation(opeGreen)
         queue.addOperation(opeYellow)
         queue.addOperation(opeRed)
-//        queue.waitUntilAllOperationsAreFinished()
+        queue.waitUntilAllOperationsAreFinished()
         
 
-        
         
 //        let mainQueue = OperationQueue.main
 //        let greenOperation = Operation()
