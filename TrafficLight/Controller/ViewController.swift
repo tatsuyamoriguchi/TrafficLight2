@@ -13,31 +13,27 @@ class ViewController: UIViewController {
     
     // Properties
     let access = AccessData()
-    let queue = OperationQueue()
-    
     @IBOutlet weak var trafficLightImage: UIImageView!
     
     // Button to start/restart traffic light cycle
     @IBAction func startPressedOn(_ sender: Any) {
-
-        queue.cancelAllOperations()
         
+        // counter and max number to exit out of while loop just in case
         var counter = 0
-        // Set the max number of loop
         let max = 100
         
+        // Accessng Core Data to log an event, Button Pressed
         access.createItem(event: "Start/Restart Pressed")
-        
+ 
         // Continuously loop trafficLights() till the counter gets to max
         while true {
-            queue.cancelAllOperations()
             
             // Schedule each function call ahead everytime it loops.
             // But why counter * 10 instead of counter * 11???
             // green: 5 seconds + yellow 2 seconds + red 4 seconds = 11 
             // The total seconds of one loop is 11 seconds
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(counter * 10)) {
-                self.trafficLights()
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(counter * 11)) {
+                   self.trafficLights()
             }
             
             counter += 1
@@ -60,13 +56,14 @@ class ViewController: UIViewController {
     }
     
     
-    
     func trafficLights() {
+        
+        let queue = OperationQueue()
+        
         let opeGreen = BlockOperation {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                 self.trafficLightImage.image = UIImage(imageLiteralResourceName: "green.png")
                 self.access.createItem(event: "Light Changed - Green")
-                
             }
         }
         let opeYellow = BlockOperation {
@@ -81,7 +78,6 @@ class ViewController: UIViewController {
                 self.access.createItem(event: "Light Changed - Red")
             }
         }
-
         
         //opeGreen.addDependency(opeRed)
         opeYellow.addDependency(opeGreen)
@@ -92,45 +88,5 @@ class ViewController: UIViewController {
         queue.addOperation(opeRed)
         queue.waitUntilAllOperationsAreFinished()
         
-
-        
-//        let mainQueue = OperationQueue.main
-//        let greenOperation = Operation()
-//        let yellowOperation = Operation()
-//        let redOperation = Operation()
-//
-//        mainQueue.addOperation {
-//            greenOperation.start()
-//            yellowOperation.start()
-//            redOperation.start()
-//        }
-//
-//        yellowOperation.addDependency(greenOperation)
-//        redOperation.addDependency(yellowOperation)
-//
-//        greenOperation.completionBlock = {
-//            DispatchQueue.main.async {
-//                self.trafficLightImage.image = UIImage(imageLiteralResourceName: "green.png")
-//                self.access.createItem(event: "Light Changed - Green")
-//            }
-//        }
-//
-//        yellowOperation.completionBlock = {
-//            DispatchQueue.main.async {
-//                self.trafficLightImage.image = UIImage(imageLiteralResourceName: "yellow.png")
-//                self.access.createItem(event: "Light Changed - Yellow")
-//            }
-//        }
-//
-//        redOperation.completionBlock = {
-//            DispatchQueue.main.async {
-//                self.trafficLightImage.image = UIImage(imageLiteralResourceName: "red.png")
-//                self.access.createItem(event: "Light Changed - Red")
-//            }
-//
-//        }
-            
-
-
     }
 }
