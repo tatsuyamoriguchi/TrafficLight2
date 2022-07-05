@@ -13,16 +13,15 @@ class ViewController: UIViewController {
     
     // Properties
     let access = AccessData()
-    weak var timer: Timer?
+    let queue = OperationQueue()
+    
     @IBOutlet weak var trafficLightImage: UIImageView!
     
     // Button to start/restart traffic light cycle
     @IBAction func startPressedOn(_ sender: Any) {
-                
-        // To fix inconsistant Red light duration
-        timer?.invalidate()
-        timer = nil
 
+        queue.cancelAllOperations()
+        
         var counter = 0
         // Set the max number of loop
         let max = 100
@@ -31,9 +30,7 @@ class ViewController: UIViewController {
         
         // Continuously loop trafficLights() till the counter gets to max
         while true {
-            
-            timer?.invalidate()
-            timer = nil
+            queue.cancelAllOperations()
             
             // Schedule each function call ahead everytime it loops.
             // But why counter * 10 instead of counter * 11???
@@ -66,27 +63,76 @@ class ViewController: UIViewController {
     
     
     func trafficLights() {
-        
-        guard timer == nil else { return }
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 0, repeats: false) { timer in
-            self.trafficLightImage.image = UIImage(imageLiteralResourceName: "green.png")
-            
-            self.access.createItem(event: "Light Changed - Green")
-            
+        let opeGreen = BlockOperation {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                self.trafficLightImage.image = UIImage(imageLiteralResourceName: "green.png")
+                self.access.createItem(event: "Light Changed - Green")
+                
+            }
         }
-        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { timer in
-            self.trafficLightImage.image = UIImage(imageLiteralResourceName: "yellow.png")
-            
-            self.access.createItem(event: "Light Changed - Yellow")
+        let opeYellow = BlockOperation {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                self.trafficLightImage.image = UIImage(imageLiteralResourceName: "yellow.png")
+                self.access.createItem(event: "Light Changed - Yellow")
+            }
+        }
+        let opeRed = BlockOperation {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+                self.trafficLightImage.image = UIImage(imageLiteralResourceName: "red.png")
+                self.access.createItem(event: "Light Changed - Red")
+            }
+        }
 
-        }
-        timer = Timer.scheduledTimer(withTimeInterval: 7, repeats: false) { timer in
-            self.trafficLightImage.image = UIImage(imageLiteralResourceName: "red.png")
-            
-            self.access.createItem(event: "Light Changed - Red")
-        }
         
+        //opeGreen.addDependency(opeRed)
+        opeYellow.addDependency(opeGreen)
+        opeRed.addDependency(opeYellow)
+        
+        queue.addOperation(opeGreen)
+        queue.addOperation(opeYellow)
+        queue.addOperation(opeRed)
+//        queue.waitUntilAllOperationsAreFinished()
+        
+
+        
+        
+//        let mainQueue = OperationQueue.main
+//        let greenOperation = Operation()
+//        let yellowOperation = Operation()
+//        let redOperation = Operation()
+//
+//        mainQueue.addOperation {
+//            greenOperation.start()
+//            yellowOperation.start()
+//            redOperation.start()
+//        }
+//
+//        yellowOperation.addDependency(greenOperation)
+//        redOperation.addDependency(yellowOperation)
+//
+//        greenOperation.completionBlock = {
+//            DispatchQueue.main.async {
+//                self.trafficLightImage.image = UIImage(imageLiteralResourceName: "green.png")
+//                self.access.createItem(event: "Light Changed - Green")
+//            }
+//        }
+//
+//        yellowOperation.completionBlock = {
+//            DispatchQueue.main.async {
+//                self.trafficLightImage.image = UIImage(imageLiteralResourceName: "yellow.png")
+//                self.access.createItem(event: "Light Changed - Yellow")
+//            }
+//        }
+//
+//        redOperation.completionBlock = {
+//            DispatchQueue.main.async {
+//                self.trafficLightImage.image = UIImage(imageLiteralResourceName: "red.png")
+//                self.access.createItem(event: "Light Changed - Red")
+//            }
+//
+//        }
+            
+
+
     }
 }
-
