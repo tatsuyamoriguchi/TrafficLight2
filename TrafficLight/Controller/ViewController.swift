@@ -32,7 +32,7 @@ class ViewController: UIViewController {
             // But why counter * 10 instead of counter * 11???
             // green: 5 seconds + yellow 2 seconds + red 4 seconds = 11 
             // The total seconds of one loop is 11 seconds
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(counter * 11)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(counter * 10)) {
                    self.trafficLights()
             }
             
@@ -64,28 +64,41 @@ class ViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                 self.trafficLightImage.image = UIImage(imageLiteralResourceName: "green.png")
                 self.access.createItem(event: "Light Changed - Green")
+                print("Green - \(Date())")
             }
         }
         let opeYellow = BlockOperation {
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 self.trafficLightImage.image = UIImage(imageLiteralResourceName: "yellow.png")
                 self.access.createItem(event: "Light Changed - Yellow")
+                print("Yellow - \(Date())")
             }
         }
         let opeRed = BlockOperation {
             DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
                 self.trafficLightImage.image = UIImage(imageLiteralResourceName: "red.png")
                 self.access.createItem(event: "Light Changed - Red")
+                print("Red - \(Date())")
             }
+        }
+        
+        let cancelBlocks = BlockOperation {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 11, execute: {
+                opeGreen.cancel()
+                opeYellow.cancel()
+                opeRed.cancel()
+            })
         }
         
         //opeGreen.addDependency(opeRed)
         opeYellow.addDependency(opeGreen)
         opeRed.addDependency(opeYellow)
+        cancelBlocks.addDependency(opeRed)
         
         queue.addOperation(opeGreen)
         queue.addOperation(opeYellow)
         queue.addOperation(opeRed)
+        queue.addOperation(cancelBlocks)
         queue.waitUntilAllOperationsAreFinished()
         
     }
