@@ -82,24 +82,27 @@ class ViewController: UIViewController {
             }
         }
         
-//        let cancelBlocks = BlockOperation {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 11, execute: {
-//                opeGreen.cancel()
-//                opeYellow.cancel()
-//                opeRed.cancel()
-//            })
-//        }
+        let cancelBlocks = BlockOperation {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 12, execute: {
+                opeGreen.cancel()
+                opeYellow.cancel()
+                opeRed.cancel()
+            })
+        }
         
         //opeGreen.addDependency(opeRed)
         opeYellow.addDependency(opeGreen)
         opeRed.addDependency(opeYellow)
-//        cancelBlocks.addDependency(opeRed)
+        cancelBlocks.addDependency(opeRed)
         
         queue.addOperation(opeGreen)
         queue.addOperation(opeYellow)
         queue.addOperation(opeRed)
-//        queue.addOperation(cancelBlocks)
+        queue.addOperation(cancelBlocks)
         queue.waitUntilAllOperationsAreFinished()
+        
+        
+        
         
     }
 }
