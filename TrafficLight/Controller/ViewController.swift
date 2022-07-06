@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     
     // Properties
     let access = AccessData()
+    let queue = OperationQueue()
     @IBOutlet weak var trafficLightImage: UIImageView!
     
     // Button to start/restart traffic light cycle
@@ -27,7 +28,9 @@ class ViewController: UIViewController {
  
         // Continuously loop trafficLights() till the counter gets to max
         while true {
-            
+
+            queue.cancelAllOperations()
+
             // Schedule each function call ahead everytime it loops.
             // But why counter * 10 instead of counter * 11???
             // green: 5 seconds + yellow 2 seconds + red 4 seconds = 11 
@@ -58,7 +61,7 @@ class ViewController: UIViewController {
     
     func trafficLights() {
         
-        let queue = OperationQueue()
+      
         
         let opeGreen = BlockOperation {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
@@ -82,27 +85,20 @@ class ViewController: UIViewController {
             }
         }
         
-        let cancelBlocks = BlockOperation {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 12, execute: {
-                opeGreen.cancel()
-                opeYellow.cancel()
-                opeRed.cancel()
-            })
-        }
         
         //opeGreen.addDependency(opeRed)
         opeYellow.addDependency(opeGreen)
         opeRed.addDependency(opeYellow)
-        cancelBlocks.addDependency(opeRed)
         
         queue.addOperation(opeGreen)
         queue.addOperation(opeYellow)
         queue.addOperation(opeRed)
-        queue.addOperation(cancelBlocks)
         queue.waitUntilAllOperationsAreFinished()
         
-        
-        
-        
+        queue.cancelAllOperations()
+        opeGreen.cancel()
+        opeYellow.cancel()
+        opeRed.cancel()
+
     }
 }
